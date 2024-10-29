@@ -3,8 +3,8 @@
 
 <h2 align="left">Challenge: Create a Simple To-Do List in 24h</h2>
 <h3 align="left">Start Time: 10:20 29/10/2024</h3>
-<h3 align="left">End Time:</h3>
-<h3 align="left">Status: Not Completed</h3>
+<h3 align="left">End Time: 12:16 29/10/2024</h3>
+<h3 align="left">Status: Completed</h3>
 
 
 <p align="left">
