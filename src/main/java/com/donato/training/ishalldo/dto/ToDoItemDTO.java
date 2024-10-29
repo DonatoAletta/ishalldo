@@ -1,40 +1,21 @@
-package com.donato.training.ishalldo.entity;
+package com.donato.training.ishalldo.dto;
 
 import com.donato.training.ishalldo.enumerators.Priority;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "item")
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ToDoItem {
+public class ToDoItemDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Setter
     private String title;
-
-    @Setter
     private String description;
-
-    @Setter
     private boolean isComplete;
-
-    @Setter
     private LocalDateTime createdTime;
-
-    @Setter
     private LocalDateTime dueDate;
-
-    @Setter
-    @Enumerated(EnumType.STRING)
     private Priority priorityLevel;
 }
