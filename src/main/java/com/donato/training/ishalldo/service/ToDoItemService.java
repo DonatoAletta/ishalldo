@@ -2,6 +2,7 @@ package com.donato.training.ishalldo.service;
 
 import com.donato.training.ishalldo.dto.ToDoItemDTO;
 import com.donato.training.ishalldo.entity.ToDoItem;
+import com.donato.training.ishalldo.enumerators.Priority;
 import com.donato.training.ishalldo.mapper.ToDoItemMapper;
 import com.donato.training.ishalldo.repository.ToDoItemRepository;
 import com.donato.training.ishalldo.repository.UserRepository;
@@ -49,6 +50,20 @@ public class ToDoItemService {
         ToDoItem toDoItem = toDoItemRepository.findByIdAndUser_Email(id,userDetails.getUsername()).orElseThrow(() -> new Exception("No Task with id: " + id + " found for user: " + userDetails.getUsername()));
         toDoItemRepository.delete(toDoItem);
         return true;
+    }
+
+    public ToDoItemDTO setCompleteStatus(Long id, UserDetails userDetails, boolean status)throws Exception{
+        ToDoItem toDoItem = toDoItemRepository.findByIdAndUser_Email(id,userDetails.getUsername()).orElseThrow(() -> new Exception("No Task with id: " + id + " found for user: " + userDetails.getUsername()));
+        toDoItem.setComplete(status);
+        toDoItemRepository.save(toDoItem);
+        return toDoItemMapper.toDoItemDTO(toDoItem);
+    }
+
+    public ToDoItemDTO setPriorityLevel(Long id, UserDetails userDetails, Priority priority)throws Exception{
+        ToDoItem toDoItem = toDoItemRepository.findByIdAndUser_Email(id,userDetails.getUsername()).orElseThrow(() -> new Exception("No Task with id: " + id + " found for user: " + userDetails.getUsername()));
+        toDoItem.setPriorityLevel(priority);
+        toDoItemRepository.save(toDoItem);
+        return toDoItemMapper.toDoItemDTO(toDoItem);
     }
 }
 

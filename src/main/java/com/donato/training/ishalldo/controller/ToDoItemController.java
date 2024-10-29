@@ -2,6 +2,7 @@ package com.donato.training.ishalldo.controller;
 
 import com.donato.training.ishalldo.dto.ToDoItemDTO;
 import com.donato.training.ishalldo.entity.ToDoItem;
+import com.donato.training.ishalldo.enumerators.Priority;
 import com.donato.training.ishalldo.service.ToDoItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,19 +27,19 @@ public class ToDoItemController {
     }
 
     @PostMapping("/user/task/{userId}")
-    public ResponseEntity<?> addNewTask(@PathVariable("userId") Long userId, @RequestBody ToDoItem toDoItem){
-        try{
-            ToDoItemDTO toDoItemDTO = toDoItemService.saveNewTask(userId,toDoItem);
+    public ResponseEntity<?> addNewTask(@PathVariable("userId") Long userId, @RequestBody ToDoItem toDoItem) {
+        try {
+            ToDoItemDTO toDoItemDTO = toDoItemService.saveNewTask(userId, toDoItem);
             return ResponseEntity.status(HttpStatus.OK).body(toDoItemDTO);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/user/task/destroy/{taskId}")
-    public ResponseEntity<?> deleteTask(@PathVariable("taskId") Long taskId, @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> deleteTask(@PathVariable("taskId") Long taskId, @AuthenticationPrincipal UserDetails userDetails) {
         try {
-            boolean result = toDoItemService.deleteTask(taskId,userDetails);
+            boolean result = toDoItemService.deleteTask(taskId, userDetails);
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -48,12 +49,37 @@ public class ToDoItemController {
     @PatchMapping("/user/details/{taskId}")
     public ResponseEntity<?> updateTaskDetails(@PathVariable("taskId") Long taskId,
                                                @AuthenticationPrincipal UserDetails userDetails,
-                                               @RequestParam Long field,
-                                               @RequestParam Long parameter){
+                                               @RequestParam String field,
+                                               @RequestParam String parameter) {
+        try {
+            ToDoItemDTO toDoItemDTO = toDoItemService.updateTaskDetails(taskId, field, parameter, userDetails);
+            return ResponseEntity.status(HttpStatus.OK).body(toDoItemDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/user/priority/{taskId}")
+    public ResponseEntity<?> setPriorityLevel(@PathVariable("taskId") Long taskId,
+                                              @AuthenticationPrincipal UserDetails userDetails,
+                                              @RequestParam Priority priority) {
         try{
-
+            ToDoItemDTO toDoItemDTO = toDoItemService.setPriorityLevel(taskId,userDetails,priority);
+            return ResponseEntity.status(HttpStatus.OK).body(toDoItemDTO);
         }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
+    @PatchMapping("/user/complete/{taskId}")
+    public ResponseEntity<?> setCompleteStatus(@PathVariable("taskId") Long taskId,
+                                               @AuthenticationPrincipal UserDetails userDetails,
+                                               @RequestParam boolean value) {
+        try {
+            ToDoItemDTO todoItem = toDoItemService.setCompleteStatus(taskId, userDetails, value);
+            return ResponseEntity.status(HttpStatus.OK).body(todoItem);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
