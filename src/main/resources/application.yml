@@ -1,6 +1,9 @@
 spring:
   application:
     name: IShallDo
+    secret:
+      key: Ly43sqyB9CZgUtfDVSZ0jLz1itRoGdElJK1lkEQp1St004nyzufnDvsKDKlmH9yY
+    expiration: 1800000
   jpa:
     hibernate:
       dialect: jakarta.persistence.jdbc.url

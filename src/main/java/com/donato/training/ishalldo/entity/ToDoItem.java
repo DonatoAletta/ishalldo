@@ -2,10 +2,7 @@ package com.donato.training.ishalldo.entity;
 
 import com.donato.training.ishalldo.enumerators.Priority;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ToDoItem {
 
     @Id
@@ -26,7 +24,7 @@ public class ToDoItem {
     private String description;
 
     @Setter
-    private boolean isComplete;
+    private boolean isComplete = false;
 
     @Setter
     private LocalDateTime createdTime;
@@ -36,5 +34,10 @@ public class ToDoItem {
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private Priority priorityLevel;
+    private Priority priorityLevel = Priority.LOW;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

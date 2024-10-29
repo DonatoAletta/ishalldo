@@ -4,9 +4,13 @@ import com.donato.training.ishalldo.dto.ToDoItemDTO;
 import com.donato.training.ishalldo.entity.ToDoItem;
 import com.donato.training.ishalldo.mapper.ToDoItemMapper;
 import com.donato.training.ishalldo.repository.ToDoItemRepository;
+import com.donato.training.ishalldo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,20 +19,23 @@ public class ToDoItemService {
 
     private final ToDoItemRepository toDoItemRepository;
     private final ToDoItemMapper toDoItemMapper;
+    private final UserRepository userRepository;
 
-
-    public List<ToDoItemDTO> getAllTasks() {
-        List<ToDoItem> toDoItemList = toDoItemRepository.findAll();
+    public List<ToDoItemDTO> getAllTasks(Long id) {
+        List<ToDoItem> toDoItemList = toDoItemRepository.findAllByUserId(id);
         return toDoItemList.stream().map(toDoItemMapper::toDoItemDTO).toList();
     }
 
-    public ToDoItemDTO saveNewTask(ToDoItem toDoItem) {
+    public ToDoItemDTO saveNewTask(Long userId, ToDoItem toDoItem) throws Exception{
+        toDoItem.setUser(userRepository.findById(userId).orElseThrow(() -> new Exception("User with id: " + userId + " not found.")));
+        toDoItem.setCreatedTime(LocalDateTime.now());
+        toDoItem.setDueDate(LocalDateTime.now().plusDays(7));
         toDoItemRepository.save(toDoItem);
         return toDoItemMapper.toDoItemDTO(toDoItem);
     }
 
-    public ToDoItemDTO updateTaskDetails(Long id, String field, String parameter) throws Exception {
-        ToDoItem toDoItem = toDoItemRepository.findById(id).orElseThrow(() -> new Exception("ToDoItem not found"));
+    public ToDoItemDTO updateTaskDetails(Long id, String field, String parameter, @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+        ToDoItem toDoItem = toDoItemRepository.findByIdAndUser_Email(id,userDetails.getUsername()).orElseThrow(() -> new Exception("No Task with id: " + id + " found for user: " + userDetails.getUsername()));
         switch (field) {
             case "title" -> toDoItem.setTitle(parameter);
             case "description" -> toDoItem.setDescription(parameter);
@@ -38,8 +45,9 @@ public class ToDoItemService {
         return toDoItemMapper.toDoItemDTO(toDoItem);
     }
 
-    public boolean deleteTask(Long id){
-        toDoItemRepository.deleteById(id);
+    public boolean deleteTask(Long id, UserDetails userDetails)throws Exception{
+        ToDoItem toDoItem = toDoItemRepository.findByIdAndUser_Email(id,userDetails.getUsername()).orElseThrow(() -> new Exception("No Task with id: " + id + " found for user: " + userDetails.getUsername()));
+        toDoItemRepository.delete(toDoItem);
         return true;
     }
 }
