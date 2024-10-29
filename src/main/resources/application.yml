@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: IShallDo
+  jpa:
+    hibernate:
+      dialect: jakarta.persistence.jdbc.url
+      ddl-auto: create
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/ishalldo
+    username: root
+    password: rootpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
