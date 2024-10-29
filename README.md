@@ -1,7 +1,7 @@
 <h1 align="center">24H Coding Challenge ( Junior )</h1>
 <h3 align="center">Simple To-Do List API</h3>
 
-<h3 align="left">Challenge: Create a Simple To-Do List in 24h</h3>
+<h2 align="left">Challenge: Create a Simple To-Do List in 24h</h2>
 <h3 align="left">Start Time: 10:20 29/10/2024</h3>
 <h3 align="left">End Time:</h3>
 <h3 align="left">Status: Not Completed</h3>
