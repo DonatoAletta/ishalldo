@@ -1,7 +1,7 @@
 <h1 align="center">24H Coding Challenge ( Junior )</h1>
 <h3 align="center">Simple To-Do List API</h3>
 
-<h3 align="left">Connect with me:</h3>
+<h3 align="left">Challenge: Create a Simple To-Do List in 24h</h3>
 <p align="left">
 </p>
 
